@@ -1,4 +1,4 @@
-for ((p=10000;p<10100;p++))
+for ((p=0;p<50;p++))
 do
-    nohup ./server -port=":$p" &
+    docker run -d visenze/docker-test-server:test
 done
