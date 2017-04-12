@@ -6,6 +6,7 @@ import (
 	"log"
 	"sync"
 	"time"
+	"strings"
 
 	pb "github.com/pdu/docker-test/proto"
 	"golang.org/x/net/context"
@@ -14,19 +15,19 @@ import (
 )
 
 var size = flag.Int("size", 4096, "message size")
-var portBegin = flag.Int("begin", 10000, "Begin port range")
-var portEnd = flag.Int("end", 10100, "End port range")
+var ips = flag.String("ips", "", "ip list")
 var limit = flag.Int("limit", 10000, "The times of running")
 var sleep = flag.Int("sleep", 1, "The sleep gap in ms")
 
 func main() {
 	flag.Parse()
+    ipList := strings.Split(*ips, ",")
 	var wg sync.WaitGroup
-	for port := *portBegin; port < *portEnd; port++ {
+	for _, ip := range ipList {
 		wg.Add(1)
-		go func(port int) {
+		go func(ip string, port int) {
 			defer wg.Done()
-			address := fmt.Sprintf("localhost:%d", port)
+			address := fmt.Sprintf("%s:%d", ip, port)
 			conn, err := grpc.Dial(address, grpc.WithInsecure())
 			if err != nil {
 				log.Fatalf("did not connect: %v", err)
@@ -48,7 +49,7 @@ func main() {
 					}
 				}
 			}
-		}(port)
+		}(ip, 10000)
 	}
 	wg.Wait()
 }
