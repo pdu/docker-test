@@ -1,0 +1,12 @@
+package: github.com/pdu/docker-test
+import:
+- package: github.com/golang/protobuf
+  subpackages:
+  - proto
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: google.golang.org/grpc
+  version: ^1.2.1
+  subpackages:
+  - reflection
