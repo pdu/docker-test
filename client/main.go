@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 	"time"
-    "strings"
+	"strings"
 
 	pb "github.com/pdu/docker-test/proto"
 	"golang.org/x/net/context"
